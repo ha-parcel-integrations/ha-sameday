@@ -23,10 +23,11 @@ from homeassistant.config_entries import ConfigEntry
 from .const import (
     CONF_DELIVERED_FILTER_AMOUNT,
     CONF_DELIVERED_FILTER_TYPE,
+    COUNTRY_TRACKING_URLS,
+    DEFAULT_COUNTRY,
     DEFAULT_DELIVERED_FILTER_AMOUNT,
     DEFAULT_DELIVERED_FILTER_TYPE,
     HISTORY_MAX_EVENTS,
-    TRACKING_URL,
     ParcelStatus,
 )
 
@@ -299,19 +300,21 @@ def build_history(
     return ordered[-max_events:]
 
 
-def tracking_url(tracking_code: str | None) -> str | None:
+def tracking_url(tracking_code: str | None, country: str = DEFAULT_COUNTRY) -> str | None:
     """Construct the consumer tracking deep-link for a parcel.
 
-    Sameday has no confirmed public per-AWB web page, so ``TRACKING_URL`` is
-    ``None`` and this always returns ``None`` — the parcel's ``url`` field
-    stays unset rather than link somewhere fabricated.
+    Each country has its own tracking-page URL (see ``COUNTRY_TRACKING_URLS``);
+    an unknown country or a missing code yields ``None``.
     """
-    if not tracking_code or TRACKING_URL is None:
+    template = COUNTRY_TRACKING_URLS.get(country)
+    if not tracking_code or template is None:
         return None
-    return TRACKING_URL.format(tracking_code=tracking_code)
+    return template.format(tracking_code=tracking_code)
 
 
-def normalize_parcel(raw: dict, *, include_history: bool = False) -> dict:
+def normalize_parcel(
+    raw: dict, *, include_history: bool = False, country: str = DEFAULT_COUNTRY
+) -> dict:
     """Return a carrier-agnostic parcel dict with the payload under ``raw``.
 
     The **keys of the returned dict are the contract**: every carrier in the
@@ -362,7 +365,7 @@ def normalize_parcel(raw: dict, *, include_history: bool = False) -> dict:
         "planned_to": None,
         "pickup": status is ParcelStatus.AT_PICKUP_POINT,
         "pickup_point": _event_location(current) if current and status is ParcelStatus.AT_PICKUP_POINT else None,
-        "url": tracking_url(tracking_code),
+        "url": tracking_url(tracking_code, country),
         "weight": None,
         "dimensions": None,
         "history": build_history(history_events) if include_history else None,

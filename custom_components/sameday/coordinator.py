@@ -18,10 +18,12 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .api import SamedayApiClient, SamedayApiError
 from .const import (
+    CONF_COUNTRY,
     CONF_INCLUDE_HISTORY,
     CONF_PARCELS,
     CONF_REFRESH_INTERVAL,
     CONF_TRACKING_CODE,
+    DEFAULT_COUNTRY,
     DEFAULT_INCLUDE_HISTORY,
     DEFAULT_REFRESH_INTERVAL,
     DOMAIN,
@@ -116,6 +118,11 @@ class SamedayCoordinator(DataUpdateCoordinator[list[dict]]):
             )
         )
 
+    @property
+    def _country(self) -> str:
+        """The entry's Sameday country (host + tracking-page deep link)."""
+        return self.config_entry.data.get(CONF_COUNTRY, DEFAULT_COUNTRY)
+
     async def _async_update_data(self) -> list[dict]:
         """Fetch every tracked parcel and split into active vs delivered."""
         codes = self._tracked()
@@ -165,8 +172,10 @@ class SamedayCoordinator(DataUpdateCoordinator[list[dict]]):
             raise UpdateFailed("Sameday unreachable for all tracked parcels")
 
         include_history = self._include_history
+        country = self._country
         normalized = [
-            normalize_parcel(raw, include_history=include_history) for raw in raws
+            normalize_parcel(raw, include_history=include_history, country=country)
+            for raw in raws
         ]
         active = [parcel for parcel in normalized if not parcel["delivered"]]
         delivered = [parcel for parcel in normalized if parcel["delivered"]]

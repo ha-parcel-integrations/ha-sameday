@@ -43,15 +43,20 @@ PLATFORMS = [Platform.BUTTON, Platform.CALENDAR, Platform.SENSOR]
 #   here for the record but not used:
 #   ``GET https://recipients.sameday.ro/api/awbs/public/{awb}?culture=ro-RO``.
 #
-# No confirmed public per-AWB *web* page: Sameday's consumer tracking page path
-# has not been captured, so each parcel's ``url`` field stays ``None`` rather
-# than ship a fabricated deep link. Revisit once a real browser capture lands
-# (see the pre-release "unconfirmed fields" warning).
+# Public consumer tracking *web* page, per country — surfaced on each parcel's
+# ``url`` field as a deep link. Each national site uses its own path (and HU a
+# hash fragment), so this is a per-country map rather than one template. RO and
+# BG are confirmed; HU is best-effort (the site reads the ``#awb`` fragment) and
+# at worst lands on the tracking page without pre-filling the AWB.
 TRACKING_API_URL = (
     "https://api.sameday.{country}/api/public/awb/{tracking_code}"
     "/awb-history?_locale={locale}"
 )
-TRACKING_URL: str | None = None
+COUNTRY_TRACKING_URLS = {
+    "ro": "https://sameday.ro/status-colet/?awb={tracking_code}",
+    "hu": "https://sameday.hu/#awb={tracking_code}",
+    "bg": "https://sameday.bg/status-na-pratkata/?awb={tracking_code}",
+}
 
 # Country selection. Sameday operates the same API on three national hosts; the
 # TLD is the only thing that differs, and ``_locale`` follows it. Stored in the

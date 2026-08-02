@@ -57,9 +57,11 @@ numeric `statusStateId` map are reconstructed from Sameday's official Android AP
   sensor and calendar stay inert and `sameday_parcel_delivery_time_changed` never
   fires (machinery kept for parity, exercised white-box in `test_coordinator.py`).
 - **`None` on purpose:** `sender`, `receiver`, `weight`, `dimensions` (absent from
-  the public payload) and `url` (**no confirmed public per-AWB web page** — do not
-  fabricate one; `TRACKING_URL` is `None`). `pickup_point` **is** populated, from
-  the current event's `transitLocation`, but only when `status is AT_PICKUP_POINT`.
+  the public payload). `url` **is** a per-country deep link
+  (`COUNTRY_TRACKING_URLS`, threaded via `normalize_parcel(country=…)` from the
+  coordinator's `_country`) — RO/BG confirmed, HU (`#awb` fragment) best-effort.
+  `pickup_point` **is** populated, from the current event's `transitLocation`,
+  but only when `status is AT_PICKUP_POINT`.
 - **History status is mapped** — unlike some siblings, `awbHistory` events carry a
   `statusStateId`, so history entries reuse `_STATUS_MAP` (don't extend the map
   per event).

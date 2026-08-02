@@ -243,8 +243,8 @@ def test_normalize_delivered_parcel():
     # Sameday's public timeline carries no ETA window at all.
     assert parcel["planned_from"] is None
     assert parcel["planned_to"] is None
-    # No confirmed public per-AWB web page, so no deep link.
-    assert parcel["url"] is None
+    # Deep link defaults to the RO tracking page (default country).
+    assert parcel["url"] == "https://sameday.ro/status-colet/?awb=2SDAY0009999"
     assert parcel["weight"] is None
     assert parcel["dimensions"] is None
     assert parcel["history"] is None  # opt-in, default off
@@ -295,6 +295,22 @@ def test_normalize_pending_placeholder():
 def test_normalize_keeps_raw_payload():
     raw = active_sample()
     assert normalize_parcel(raw)["raw"] is raw
+
+
+@pytest.mark.parametrize(
+    "country,expected",
+    [
+        ("ro", "https://sameday.ro/status-colet/?awb=2SDAY0009999"),
+        ("hu", "https://sameday.hu/#awb=2SDAY0009999"),
+        ("bg", "https://sameday.bg/status-na-pratkata/?awb=2SDAY0009999"),
+    ],
+)
+def test_normalize_deep_link_is_per_country(country, expected):
+    assert normalize_parcel(delivered_sample(), country=country)["url"] == expected
+
+
+def test_normalize_deep_link_none_for_unknown_country():
+    assert normalize_parcel(delivered_sample(), country="xx")["url"] is None
 
 
 def test_normalize_unmapped_status_is_unknown():

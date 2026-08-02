@@ -44,7 +44,7 @@ Part of the [ha-parcel-integrations](https://github.com/ha-parcel-integrations) 
 ## Features
 
 - Track any number of Sameday parcels by AWB — no account needed
-- Per-parcel sensor with the canonical status (`registered` / `in_transit` / `out_for_delivery` / `at_pickup_point` / `delivered` / …), the carrier's own status text and the current location
+- Per-parcel sensor with the canonical status (`registered` / `in_transit` / `out_for_delivery` / `at_pickup_point` / `delivered` / …), the carrier's own status text, the current location and a tracking deep-link
 - Summary sensors: incoming parcels, next delivery, recently delivered parcels
 - Read-only **Deliveries** calendar
 - `sameday.track_parcel` / `sameday.untrack_parcel` services, so a dashboard button can add a parcel

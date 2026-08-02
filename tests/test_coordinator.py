@@ -9,6 +9,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.sameday.api import SamedayApiError
 from custom_components.sameday.const import (
+    CONF_COUNTRY,
     CONF_DELIVERED_FILTER_AMOUNT,
     CONF_DELIVERED_FILTER_TYPE,
     CONF_PARCELS,
@@ -67,6 +68,27 @@ async def test_update_merges_multiple_parcels(hass):
     assert data[0]["barcode"] == ACTIVE_CODE
     assert len(coordinator.delivered) == 1
     assert coordinator.last_success_time is not None
+
+
+async def test_deep_link_uses_entry_country(hass):
+    """The parcel ``url`` follows the entry's country, not the RO default."""
+    entry = MockConfigEntry(
+        domain=DOMAIN,
+        data={CONF_COUNTRY: "bg"},
+        options={
+            CONF_PARCELS: [{CONF_TRACKING_CODE: ACTIVE_CODE}],
+            CONF_DELIVERED_FILTER_TYPE: "parcels",
+            CONF_DELIVERED_FILTER_AMOUNT: 100,
+        },
+        unique_id=DOMAIN,
+    )
+    entry.add_to_hass(hass)
+    client = AsyncMock()
+    client.async_get_parcel.return_value = active_sample()
+    coordinator = SamedayCoordinator(hass, client, entry)
+
+    data = await coordinator._async_update_data()
+    assert data[0]["url"] == f"https://sameday.bg/status-na-pratkata/?awb={ACTIVE_CODE}"
 
 
 async def test_update_not_found_shows_pending_placeholder(hass):
