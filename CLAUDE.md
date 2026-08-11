@@ -61,7 +61,9 @@ numeric `statusStateId` map are reconstructed from Sameday's official Android AP
   (`COUNTRY_TRACKING_URLS`, threaded via `normalize_parcel(country=…)` from the
   coordinator's `_country`) — RO/BG confirmed, HU (`#awb` fragment) best-effort.
   `pickup_point` **is** populated, from the current event's `transitLocation`,
-  but only when `status is AT_PICKUP_POINT`.
+  but only when `status is AT_PICKUP_POINT`. Reflected in `const.py`'s
+  `CAPABILITIES` (feeds the docs site's comparison table) — keep the two in
+  agreement if that ever changes.
 - **History status is mapped** — unlike some siblings, `awbHistory` events carry a
   `statusStateId`, so history entries reuse `_STATUS_MAP` (don't extend the map
   per event).
