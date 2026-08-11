@@ -1,0 +1,157 @@
+{
+  "title": "Sameday",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurează Sameday",
+        "description": "Urmărirea Sameday nu necesită cont sau cod poștal. Alege țara în care sunt expediate coletele tale — aceeași urmărire funcționează pe rețelele Sameday din România, Ungaria și Bulgaria. Adaugă colete ulterior din opțiunile integrării sau din serviciul `sameday.track_parcel`.",
+        "data": {
+          "country": "Țară"
+        },
+        "data_description": {
+          "country": "Rețeaua Sameday prin care sunt expediate coletele tale. Aceasta stabilește serverul de urmărire și nu poate fi schimbată ulterior fără a elimina și readăuga integrarea."
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Sameday este deja configurat."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opțiuni Sameday",
+        "sections": {
+          "parcels": {
+            "name": "Colete",
+            "data": {
+              "add": "Adaugă un colet",
+              "remove": "Elimină colete"
+            },
+            "data_description": {
+              "add": "Introdu un cod de urmărire Sameday pentru a începe să îl urmărești. Îl găsești pe confirmarea de expediere sau pe cardul de livrare nereușită."
+            }
+          },
+          "delivered": {
+            "name": "Colete livrate",
+            "data": {
+              "delivered_filter_type": "Filtrează după",
+              "delivered_filter_amount": "Cantitate"
+            },
+            "data_description": {
+              "delivered_filter_type": "Afișează coletele livrate din ultimele X zile sau limitează la cele mai recente X.",
+              "delivered_filter_amount": "Numărul de zile sau colete de afișat."
+            }
+          },
+          "history": {
+            "name": "Istoricul coletelor",
+            "data": {
+              "include_history": "Include istoricul stărilor"
+            },
+            "data_description": {
+              "include_history": "Adaugă un atribut de istoric pentru fiecare colet, cu toate actualizările de stare (marcaj temporal, stare, text original). Dezactivat implicit."
+            }
+          },
+          "polling": {
+            "name": "Interogare",
+            "data": {
+              "refresh_interval": "Reîmprospătează la fiecare"
+            },
+            "data_description": {
+              "refresh_interval": "Cât de des verifică integrarea Sameday actualizări pentru colete. Un interval mai lung este mai blând cu API-ul Sameday; valoarea implicită de 30 de minute este suficientă pentru majoritatea coletelor."
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "invalid_tracking_code": "Acesta nu pare a fi un cod de urmărire Sameday.",
+      "already_tracked": "Acel colet este deja urmărit."
+    }
+  },
+  "selector": {
+    "country": {
+      "options": {
+        "ro": "România",
+        "hu": "Ungaria",
+        "bg": "Bulgaria"
+      }
+    },
+    "refresh_interval": {
+      "options": {
+        "15": "15 minute",
+        "30": "30 minute",
+        "60": "60 minute",
+        "120": "120 minute",
+        "240": "240 minute"
+      }
+    },
+    "delivered_filter_type": {
+      "options": {
+        "days": "Zile",
+        "parcels": "Număr de colete"
+      }
+    }
+  },
+  "services": {
+    "track_parcel": {
+      "name": "Urmărește colet",
+      "description": "Începe urmărirea unui colet folosind codul de urmărire Sameday.",
+      "fields": {
+        "tracking_code": {
+          "name": "Cod de urmărire",
+          "description": "Codul de urmărire Sameday."
+        }
+      }
+    },
+    "untrack_parcel": {
+      "name": "Oprește urmărirea coletului",
+      "description": "Oprește urmărirea unui colet folosind codul de urmărire Sameday.",
+      "fields": {
+        "tracking_code": {
+          "name": "Cod de urmărire",
+          "description": "Codul de urmărire Sameday pentru care se oprește urmărirea."
+        }
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "parcel_registered": "Un colet a fost înregistrat",
+      "parcel_status_changed": "Starea unui colet s-a schimbat",
+      "parcel_delivered": "Un colet a fost livrat",
+      "parcel_delivery_time_changed": "Ora estimată de livrare a unui colet s-a schimbat"
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {
+        "name": "Reîmprospătează"
+      }
+    },
+    "calendar": {
+      "deliveries": {
+        "name": "Livrări"
+      }
+    },
+    "sensor": {
+      "incoming_parcels": {
+        "name": "Colete în așteptare",
+        "unit_of_measurement": "colete"
+      },
+      "next_delivery": {
+        "name": "Următoarea livrare"
+      },
+      "delivered_parcels": {
+        "name": "Colete livrate",
+        "unit_of_measurement": "colete"
+      },
+      "last_update": {
+        "name": "Ultima actualizare reușită"
+      },
+      "parcel": {
+        "name": "Colet {barcode}"
+      }
+    }
+  }
+}

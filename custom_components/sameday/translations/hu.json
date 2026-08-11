@@ -1,0 +1,157 @@
+{
+  "title": "Sameday",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sameday beállítása",
+        "description": "A Sameday nyomon követéshez nincs szükség fiókra vagy irányítószámra. Válaszd ki az országot, ahonnan a csomagjaid érkeznek — ugyanaz a nyomon követés működik a Sameday romániai, magyarországi és bulgáriai hálózatán is. Csomagokat később az integráció beállításain vagy a `sameday.track_parcel` szolgáltatáson keresztül adhatsz hozzá.",
+        "data": {
+          "country": "Ország"
+        },
+        "data_description": {
+          "country": "A Sameday hálózat, amelyen a csomagjaid szállítás alatt vannak. Ez határozza meg a nyomkövetési szervert, és később csak az integráció eltávolításával és újbóli hozzáadásával módosítható."
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "A Sameday már be van állítva."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Sameday beállítások",
+        "sections": {
+          "parcels": {
+            "name": "Csomagok",
+            "data": {
+              "add": "Csomag hozzáadása",
+              "remove": "Csomagok eltávolítása"
+            },
+            "data_description": {
+              "add": "Add meg a Sameday nyomkövetési kódot a csomag követésének elindításához. A kódot a szállítási visszaigazoláson vagy a sikertelen kézbesítésről szóló értesítőn találod."
+            }
+          },
+          "delivered": {
+            "name": "Kézbesített csomagok",
+            "data": {
+              "delivered_filter_type": "Szűrés",
+              "delivered_filter_amount": "Mennyiség"
+            },
+            "data_description": {
+              "delivered_filter_type": "Az elmúlt X nap kézbesített csomagjainak megjelenítése, vagy korlátozás a legutóbbi X darabra.",
+              "delivered_filter_amount": "A megjelenítendő napok vagy csomagok száma."
+            }
+          },
+          "history": {
+            "name": "Csomagelőzmények",
+            "data": {
+              "include_history": "Állapotelőzmények megjelenítése"
+            },
+            "data_description": {
+              "include_history": "Hozzáad egy csomagonkénti előzmény-attribútumot, amely felsorolja az összes állapotfrissítést (időbélyeg, állapot, eredeti szöveg). Alapértelmezés szerint kikapcsolva."
+            }
+          },
+          "polling": {
+            "name": "Lekérdezés",
+            "data": {
+              "refresh_interval": "Frissítés gyakorisága"
+            },
+            "data_description": {
+              "refresh_interval": "Milyen gyakran ellenőrzi az integráció a Sameday-nél a csomagfrissítéseket. A lassabb időköz kíméletesebb a Sameday API-jával szemben; az alapértelmezett 30 perc a legtöbb csomaghoz bőven elegendő."
+            }
+          }
+        }
+      }
+    },
+    "error": {
+      "invalid_tracking_code": "Ez nem tűnik érvényes Sameday nyomkövetési kódnak.",
+      "already_tracked": "Ez a csomag már nyomon van követve."
+    }
+  },
+  "selector": {
+    "country": {
+      "options": {
+        "ro": "Románia",
+        "hu": "Magyarország",
+        "bg": "Bulgária"
+      }
+    },
+    "refresh_interval": {
+      "options": {
+        "15": "15 perc",
+        "30": "30 perc",
+        "60": "60 perc",
+        "120": "120 perc",
+        "240": "240 perc"
+      }
+    },
+    "delivered_filter_type": {
+      "options": {
+        "days": "Nap",
+        "parcels": "Csomagok száma"
+      }
+    }
+  },
+  "services": {
+    "track_parcel": {
+      "name": "Csomag nyomon követése",
+      "description": "Csomag nyomon követésének elindítása a Sameday nyomkövetési kód alapján.",
+      "fields": {
+        "tracking_code": {
+          "name": "Nyomkövetési kód",
+          "description": "A Sameday nyomkövetési kód."
+        }
+      }
+    },
+    "untrack_parcel": {
+      "name": "Csomag nyomon követésének leállítása",
+      "description": "Csomag nyomon követésének leállítása a Sameday nyomkövetési kód alapján.",
+      "fields": {
+        "tracking_code": {
+          "name": "Nyomkövetési kód",
+          "description": "A Sameday nyomkövetési kód, amelynek követését le kell állítani."
+        }
+      }
+    }
+  },
+  "device_automation": {
+    "trigger_type": {
+      "parcel_registered": "Egy csomag regisztrálva lett",
+      "parcel_status_changed": "Egy csomag állapota megváltozott",
+      "parcel_delivered": "Egy csomag kézbesítve lett",
+      "parcel_delivery_time_changed": "Egy csomag várható kézbesítési ideje megváltozott"
+    }
+  },
+  "entity": {
+    "button": {
+      "refresh": {
+        "name": "Frissítés"
+      }
+    },
+    "calendar": {
+      "deliveries": {
+        "name": "Kézbesítések"
+      }
+    },
+    "sensor": {
+      "incoming_parcels": {
+        "name": "Érkező csomagok",
+        "unit_of_measurement": "csomag"
+      },
+      "next_delivery": {
+        "name": "Következő kézbesítés"
+      },
+      "delivered_parcels": {
+        "name": "Kézbesített csomagok",
+        "unit_of_measurement": "csomag"
+      },
+      "last_update": {
+        "name": "Utolsó sikeres frissítés"
+      },
+      "parcel": {
+        "name": "Csomag {barcode}"
+      }
+    }
+  }
+}
