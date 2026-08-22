@@ -38,7 +38,7 @@ Sameday is a **Romanian courier + easybox locker network — 100% parcels**, als
 operating in HU and BG. Keyless **track-by-AWB**; no account. **Status:
 unverified against a real parcel** — the success payload's field names and the
 numeric `statusStateId` map are reconstructed from Sameday's official Android APK
-(see **`carrier-research/api/sameday/`**); the map is best-effort by design
+(see **`carrier-research/sameday/api/`**); the map is best-effort by design
 (unknown ids → `unknown` + one-shot warning).
 
 - **Country is a hub-level setting** stored in `entry.data[CONF_COUNTRY]`
@@ -73,7 +73,7 @@ numeric `statusStateId` map are reconstructed from Sameday's official Android AP
   personal). Diagnostics redact `transitLocation`/`county`/`pickup_point`/AWB;
   transit `country` stays.
 
-**API mechanics live in `carrier-research/api/sameday/` (private research repo)**
+**API mechanics live in `carrier-research/sameday/api/` (private research repo)**
 — the endpoint, params, content type, 404 signalling, the per-country tracking
 pages and the full 28-value `statusStateId` → `ParcelStatus` vocabulary. Do not
 duplicate them here. The research narrative (how the endpoint was found, and
@@ -125,5 +125,5 @@ python -m pytest tests/ --cov=custom_components.sameday
 
 Coverage must stay **above 95%** (silver `test-coverage` rule). Run before
 committing. A code change updates the README + this file in the same commit;
-the API reference lives in the private `carrier-research/api/sameday/`,
+the API reference lives in the private `carrier-research/sameday/api/`,
 not in this repo.
