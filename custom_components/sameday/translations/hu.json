@@ -63,23 +63,23 @@
           }
         },
         "menu_options": {
-          "parcels": "Parcels",
-          "settings": "Settings"
+          "parcels": "Csomagok",
+          "settings": "Beállítások"
         }
       },
       "parcels": {
-        "title": "Parcels",
+        "title": "Csomagok",
         "data": {
-          "tracking_codes": "Tracking codes"
+          "tracking_codes": "Követési kódok"
         }
       },
       "settings": {
-        "title": "Settings",
+        "title": "Beállítások",
         "data": {
-          "delivered_filter_type": "Delivered parcels: filter by",
-          "delivered_filter_amount": "Delivered parcels: amount",
-          "include_history": "Include status history",
-          "refresh_interval": "Refresh every"
+          "delivered_filter_type": "Kézbesített csomagok: szűrés",
+          "delivered_filter_amount": "Kézbesített csomagok: darabszám",
+          "include_history": "Állapotelőzmények megjelenítése",
+          "refresh_interval": "Frissítés ennyi időnként"
         }
       }
     },

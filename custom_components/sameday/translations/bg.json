@@ -63,23 +63,23 @@
           }
         },
         "menu_options": {
-          "parcels": "Parcels",
-          "settings": "Settings"
+          "parcels": "Пратки",
+          "settings": "Настройки"
         }
       },
       "parcels": {
-        "title": "Parcels",
+        "title": "Пратки",
         "data": {
-          "tracking_codes": "Tracking codes"
+          "tracking_codes": "Кодове за проследяване"
         }
       },
       "settings": {
-        "title": "Settings",
+        "title": "Настройки",
         "data": {
-          "delivered_filter_type": "Delivered parcels: filter by",
-          "delivered_filter_amount": "Delivered parcels: amount",
-          "include_history": "Include status history",
-          "refresh_interval": "Refresh every"
+          "delivered_filter_type": "Доставени пратки: филтриране по",
+          "delivered_filter_amount": "Доставени пратки: брой",
+          "include_history": "Включване на историята на състоянието",
+          "refresh_interval": "Обновяване на всеки"
         }
       }
     },
