@@ -61,6 +61,25 @@
               "refresh_interval": "Колко често интеграцията проверява Sameday за обновления на пратките. По-бавен интервал е по-щадящ за API-то на Sameday; стойността по подразбиране от 30 минути е напълно достатъчна за повечето пратки."
             }
           }
+        },
+        "menu_options": {
+          "parcels": "Parcels",
+          "settings": "Settings"
+        }
+      },
+      "parcels": {
+        "title": "Parcels",
+        "data": {
+          "tracking_codes": "Tracking codes"
+        }
+      },
+      "settings": {
+        "title": "Settings",
+        "data": {
+          "delivered_filter_type": "Delivered parcels: filter by",
+          "delivered_filter_amount": "Delivered parcels: amount",
+          "include_history": "Include status history",
+          "refresh_interval": "Refresh every"
         }
       }
     },

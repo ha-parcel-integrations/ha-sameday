@@ -61,6 +61,25 @@
               "refresh_interval": "Cât de des verifică integrarea Sameday actualizări pentru colete. Un interval mai lung este mai blând cu API-ul Sameday; valoarea implicită de 30 de minute este suficientă pentru majoritatea coletelor."
             }
           }
+        },
+        "menu_options": {
+          "parcels": "Colete",
+          "settings": "Setări"
+        }
+      },
+      "parcels": {
+        "title": "Colete",
+        "data": {
+          "tracking_codes": "Coduri de urmărire"
+        }
+      },
+      "settings": {
+        "title": "Setări",
+        "data": {
+          "delivered_filter_type": "Colete livrate: filtrează după",
+          "delivered_filter_amount": "Colete livrate: număr",
+          "include_history": "Include istoricul stării",
+          "refresh_interval": "Actualizează la fiecare"
         }
       }
     },
