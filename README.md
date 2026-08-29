@@ -58,7 +58,7 @@ Part of the [ha-parcel-integrations](https://github.com/ha-parcel-integrations) 
 
 ## Requirements
 
-- Home Assistant 2024.7 or newer
+- Home Assistant 2024.12 or newer
 - A Sameday parcel and its AWB / tracking number (from the shipping
   confirmation email or the locker/pickup notification) — no account needed
 - The country the parcel ships in: Romania, Hungary or Bulgaria
@@ -107,6 +107,10 @@ Standard HA removal applies: **Settings → Devices & Services → Sameday → �
 | `sensor.sameday_last_successful_update` | Diagnostic: when Sameday was last polled successfully |
 
 A delivered parcel moves from its per-parcel sensor to the delivered sensor automatically.
+
+A **`button.sameday_refresh`** entity triggers an immediate poll outside the
+regular interval, and a **`calendar.sameday_deliveries`** entity shows expected
+delivery dates for active parcels — read-only, no extra API calls.
 
 ## Parcel status reference
 
