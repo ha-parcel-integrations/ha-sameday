@@ -51,15 +51,6 @@
             "data_description": {
               "include_history": "Adaugă un atribut de istoric pentru fiecare colet, cu toate actualizările de stare (marcaj temporal, stare, text original). Dezactivat implicit."
             }
-          },
-          "polling": {
-            "name": "Interogare",
-            "data": {
-              "refresh_interval": "Reîmprospătează la fiecare"
-            },
-            "data_description": {
-              "refresh_interval": "Cât de des verifică integrarea Sameday actualizări pentru colete. Un interval mai lung este mai blând cu API-ul Sameday; valoarea implicită de 30 de minute este suficientă pentru majoritatea coletelor."
-            }
           }
         },
         "menu_options": {
@@ -78,8 +69,7 @@
         "data": {
           "delivered_filter_type": "Colete livrate: filtrează după",
           "delivered_filter_amount": "Colete livrate: număr",
-          "include_history": "Include istoricul stării",
-          "refresh_interval": "Actualizează la fiecare"
+          "include_history": "Include istoricul stării"
         }
       }
     },
@@ -94,15 +84,6 @@
         "ro": "România",
         "hu": "Ungaria",
         "bg": "Bulgaria"
-      }
-    },
-    "refresh_interval": {
-      "options": {
-        "15": "15 minute",
-        "30": "30 minute",
-        "60": "60 minute",
-        "120": "120 minute",
-        "240": "240 minute"
       }
     },
     "delivered_filter_type": {
