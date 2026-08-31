@@ -63,12 +63,12 @@
           }
         },
         "menu_options": {
-          "parcels": "Colete",
+          "parcels": "Gestionare colete",
           "settings": "Setări"
         }
       },
       "parcels": {
-        "title": "Colete",
+        "title": "Gestionare colete",
         "data": {
           "tracking_codes": "Coduri de urmărire"
         }

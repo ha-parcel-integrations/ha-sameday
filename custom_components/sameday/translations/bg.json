@@ -63,12 +63,12 @@
           }
         },
         "menu_options": {
-          "parcels": "Пратки",
+          "parcels": "Управление на пратки",
           "settings": "Настройки"
         }
       },
       "parcels": {
-        "title": "Пратки",
+        "title": "Управление на пратки",
         "data": {
           "tracking_codes": "Кодове за проследяване"
         }

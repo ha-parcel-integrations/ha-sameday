@@ -63,12 +63,12 @@
           }
         },
         "menu_options": {
-          "parcels": "Csomagok",
+          "parcels": "Csomagok kezelése",
           "settings": "Beállítások"
         }
       },
       "parcels": {
-        "title": "Csomagok",
+        "title": "Csomagok kezelése",
         "data": {
           "tracking_codes": "Követési kódok"
         }
