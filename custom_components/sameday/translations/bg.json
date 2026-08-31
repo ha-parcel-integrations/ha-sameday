@@ -158,6 +158,10 @@
         "name": "Пристигащи пратки",
         "unit_of_measurement": "пратки"
       },
+      "awaiting_pickup": {
+        "name": "Очаква получаване",
+        "unit_of_measurement": "пратки"
+      },
       "next_delivery": {
         "name": "Следваща доставка"
       },

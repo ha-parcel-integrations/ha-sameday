@@ -158,6 +158,10 @@
         "name": "Érkező csomagok",
         "unit_of_measurement": "csomag"
       },
+      "awaiting_pickup": {
+        "name": "Átvételre vár",
+        "unit_of_measurement": "csomag"
+      },
       "next_delivery": {
         "name": "Következő kézbesítés"
       },
