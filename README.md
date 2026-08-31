@@ -58,7 +58,6 @@ Part of the [ha-parcel-integrations](https://github.com/ha-parcel-integrations) 
 
 ## Requirements
 
-- Home Assistant 2024.12 or newer
 - A Sameday parcel and its AWB / tracking number (from the shipping
   confirmation email or the locker/pickup notification) — no account needed
 - The country the parcel ships in: Romania, Hungary or Bulgaria
