@@ -47,6 +47,7 @@ Part of the [ha-parcel-integrations](https://github.com/ha-parcel-integrations) 
 - Track any number of Sameday parcels by AWB — no account needed
 - Per-parcel sensor with the canonical status (`registered` / `in_transit` / `out_for_delivery` / `at_pickup_point` / `delivered` / …), the carrier's own status text, the current location and a tracking deep-link
 - Summary sensors: incoming parcels, next delivery, recently delivered parcels
+- Awaiting pickup sensor for parcels sitting in an easybox or at a pickup point
 - Read-only **Deliveries** calendar
 - `sameday.track_parcel` / `sameday.untrack_parcel` services, so a dashboard button can add a parcel
 - Events + device triggers for no-code automations (parcel registered, status changed, delivered)
@@ -125,6 +126,7 @@ Standard HA removal applies: **Settings → Devices & Services → Sameday → �
 | `sensor.sameday_incoming_parcels` | Number of active tracked parcels, full list under the `parcels` attribute |
 | `sensor.sameday_parcel_<code>` | One per tracked parcel; state is the canonical status, attributes carry the full normalised parcel |
 | `sensor.sameday_next_delivery` | Earliest expected delivery moment across all active parcels |
+| `sensor.sameday_awaiting_pickup` | Parcels that are in an easybox / at a pickup point and ready to collect |
 | `sensor.sameday_delivered_parcels` | Recently delivered parcels (see the retention option) |
 | `sensor.sameday_last_successful_update` | Diagnostic: when Sameday was last polled successfully |
 
