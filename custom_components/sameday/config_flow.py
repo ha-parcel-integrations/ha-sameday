@@ -33,17 +33,6 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-# A Sameday AWB as printed on the shipping confirmation or the locker code.
-# Sameday AWBs are numeric strings, but the length varies by product/country
-# and international shipments can carry alphanumerics, so we stay permissive:
-# upper-case alphanumeric, 6-24 chars. This regex is also what the
-# ``track_parcel`` service and the e-mail-parsing example automation validate
-# against — keep it *permissive enough* that a valid AWB is never rejected; a
-# false negative is far more annoying than a bad code that simply returns "not
-# found" on the next poll.
-_TRACKING_CODE_RE = re.compile(r"^[A-Z0-9]{6,24}$")
-
-
 def normalize_tracking_code(value: str) -> str:
     """Return the tracking code upper-cased with separators stripped.
 
@@ -55,8 +44,13 @@ def normalize_tracking_code(value: str) -> str:
 
 
 def valid_tracking_code(value: str) -> bool:
-    """Whether ``value`` looks like a Sameday tracking code."""
-    return bool(_TRACKING_CODE_RE.match(value))
+    """Accept any non-empty code.
+
+    Sameday's real AWB formats vary too much and aren't fully confirmed to
+    gate on client-side; an invalid code just comes back "not found" from the
+    API anyway.
+    """
+    return bool(value)
 
 
 def _current_parcels(entry: ConfigEntry) -> list[dict[str, str]]:
