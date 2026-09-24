@@ -140,7 +140,7 @@
         "unit_of_measurement": "csomag"
       },
       "awaiting_pickup": {
-        "name": "Átvételre vár",
+        "name": "Átvételre kész",
         "unit_of_measurement": "csomag"
       },
       "next_delivery": {

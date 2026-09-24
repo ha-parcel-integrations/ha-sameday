@@ -140,7 +140,7 @@
         "unit_of_measurement": "пратки"
       },
       "awaiting_pickup": {
-        "name": "Очаква получаване",
+        "name": "Готови за вземане",
         "unit_of_measurement": "пратки"
       },
       "next_delivery": {
