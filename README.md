@@ -11,15 +11,12 @@ A custom Home Assistant integration that tracks your [Sameday](https://www.samed
 
 Part of the [ha-parcel-integrations](https://ha-parcel-integrations.github.io/) family: it publishes the same canonical parcel format, statuses and events as the other carrier integrations, so it plugs straight into the [Parcel Aggregator](https://github.com/ha-parcel-integrations/ha-parcel-aggregator) and cross-carrier automations.
 
-> ### ⚠️ Early release — the success payload is not yet confirmed
->
-> The endpoint is live and keyless, and unknown or not-yet-scanned AWBs are
-> handled correctly. What has **not yet been seen from a real parcel** is a
-> success response: its field names and the numeric `statusStateId` status map
-> are reconstructed from Sameday's official Android app. Anything unmapped
-> reports **`unknown`** (never a wrong status) and logs a one-shot warning with a
-> ready-made issue link — as does any payload field we have not confirmed yet.
-> Please [report it](https://github.com/ha-parcel-integrations/ha-sameday/issues/new?template=unrecognised_status.yml)
+> ⚠️ **Pre-1.0 release.** Unknown or not-yet-scanned AWBs are handled
+> correctly, but no real parcel has been tracked with this integration yet, so
+> the field names and the numeric `statusStateId` status map for a found parcel
+> are not confirmed. Anything unmapped reports **`unknown`** (never a wrong
+> status) and logs a one-shot warning with a ready-made issue link — as does any
+> field we have not confirmed yet. Please [report it](https://github.com/ha-parcel-integrations/ha-sameday/issues/new?template=unrecognised_status.yml)
 > so the mapping can be completed.
 
 ## Contents
