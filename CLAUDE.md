@@ -43,8 +43,7 @@ Where this repo diverges from it, that is recorded below under
 Sameday is a **Romanian courier + easybox locker network — 100% parcels**, also
 operating in HU and BG. Keyless **track-by-AWB**; no account. **Status:
 unverified against a real parcel** — the success payload's field names and the
-numeric `statusStateId` map are reconstructed from Sameday's official Android APK
-(see **`carrier-research/sameday/api/`**); the map is best-effort by design
+numeric `statusStateId` map are not yet confirmed; the map is best-effort by design
 (unknown ids → `unknown` + one-shot warning).
 
 - **Country is a hub-level setting** stored in `entry.data[CONF_COUNTRY]`
