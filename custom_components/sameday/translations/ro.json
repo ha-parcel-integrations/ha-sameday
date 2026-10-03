@@ -126,7 +126,7 @@
   "entity": {
     "button": {
       "refresh": {
-        "name": "Reîmprospătează"
+        "name": "Actualizează"
       }
     },
     "calendar": {
@@ -136,7 +136,7 @@
     },
     "sensor": {
       "incoming_parcels": {
-        "name": "Colete în așteptare",
+        "name": "Colete primite",
         "unit_of_measurement": "colete"
       },
       "awaiting_pickup": {
