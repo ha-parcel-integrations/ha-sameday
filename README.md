@@ -72,7 +72,7 @@ A custom Home Assistant integration that tracks your [Sameday](https://www.samed
 
 Or click the button below to open it directly in HACS:
 
-[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ha-parcel-integrations&repository=ha-sameday&category=integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ha-parcel-integrations&repository=ha-sameday&category=integration)
 
 ### Manual
 
@@ -80,7 +80,7 @@ Copy `custom_components/sameday` into your `config/custom_components/` folder an
 
 ## Configuration
 
-[![Open your Home Assistant instance and start setting up this integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=sameday)
+[![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=sameday)
 
 Or set it up by hand: add the integration via **Settings → Devices & Services → Add Integration → Sameday**. The only question is your country (Romania, Hungary or Bulgaria) — the same tracking runs on all three national networks, and the choice picks the right host. It is fixed for the life of the entry; to switch countries, remove and re-add the integration.
 
