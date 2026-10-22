@@ -12,10 +12,11 @@ The carrier-specific parts are :data:`_STATUS_MAP` and :func:`normalize_parcel`
 contract, the delivered filter, the one-shot warnings — is suite-wide machinery
 and should be left alone.
 """
+
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 import logging
-from datetime import datetime, timedelta, timezone
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -59,35 +60,35 @@ NEW_ISSUE_URL = (
 # RETURNING, postponements/redirects → IN_TRANSIT. The comment on each line is
 # Sameday's own name for the id.
 _STATUS_MAP: dict[str, ParcelStatus] = {
-    "1": ParcelStatus.REGISTERED,        # ORDER_OF_PARCELS_PLACED
-    "2": ParcelStatus.IN_TRANSIT,        # AT_COURIER
-    "3": ParcelStatus.IN_TRANSIT,        # IN_COURIER_WAREHOUSE
+    "1": ParcelStatus.REGISTERED,  # ORDER_OF_PARCELS_PLACED
+    "2": ParcelStatus.IN_TRANSIT,  # AT_COURIER
+    "3": ParcelStatus.IN_TRANSIT,  # IN_COURIER_WAREHOUSE
     "4": ParcelStatus.OUT_FOR_DELIVERY,  # DELIVERY_IN_PROGRESS
-    "5": ParcelStatus.DELIVERED,         # PARCELS_DELIVERED
-    "6": ParcelStatus.PROBLEM,           # EXPIRED_CANCELLED
-    "7": ParcelStatus.IN_TRANSIT,        # TRANSIT
-    "8": ParcelStatus.RETURNING,         # SUCCESSFULLY_RETURNED
-    "9": ParcelStatus.IN_TRANSIT,        # ORDER_REDIRECTED
-    "10": ParcelStatus.PROBLEM,          # DELIVERY_FAILED
-    "11": ParcelStatus.PROBLEM,          # SENDER_CANCELLED
-    "12": ParcelStatus.IN_TRANSIT,       # DELIVERY_POSTPONED
-    "13": ParcelStatus.RETURNING,        # PICKED_UP_RETURN
-    "14": ParcelStatus.RETURNING,        # ONGOING_RETURN
-    "15": ParcelStatus.RETURNING,        # RETURN_IN_OOH
-    "16": ParcelStatus.PROBLEM,          # PICKUP_FAILED
-    "17": ParcelStatus.IN_TRANSIT,       # ORDER_IN_CENTRAL_WAREHOUSE
+    "5": ParcelStatus.DELIVERED,  # PARCELS_DELIVERED
+    "6": ParcelStatus.PROBLEM,  # EXPIRED_CANCELLED
+    "7": ParcelStatus.IN_TRANSIT,  # TRANSIT
+    "8": ParcelStatus.RETURNING,  # SUCCESSFULLY_RETURNED
+    "9": ParcelStatus.IN_TRANSIT,  # ORDER_REDIRECTED
+    "10": ParcelStatus.PROBLEM,  # DELIVERY_FAILED
+    "11": ParcelStatus.PROBLEM,  # SENDER_CANCELLED
+    "12": ParcelStatus.IN_TRANSIT,  # DELIVERY_POSTPONED
+    "13": ParcelStatus.RETURNING,  # PICKED_UP_RETURN
+    "14": ParcelStatus.RETURNING,  # ONGOING_RETURN
+    "15": ParcelStatus.RETURNING,  # RETURN_IN_OOH
+    "16": ParcelStatus.PROBLEM,  # PICKUP_FAILED
+    "17": ParcelStatus.IN_TRANSIT,  # ORDER_IN_CENTRAL_WAREHOUSE
     "18": ParcelStatus.AT_PICKUP_POINT,  # LOADED_IN_OOH (in the locker/easybox)
-    "19": ParcelStatus.IN_TRANSIT,       # IN_INTERNATIONAL_TRANSIT
+    "19": ParcelStatus.IN_TRANSIT,  # IN_INTERNATIONAL_TRANSIT
     "20": ParcelStatus.AT_PICKUP_POINT,  # SAMEDAY_POINT_CROWDED
-    "21": ParcelStatus.IN_TRANSIT,       # PARCEL_KEPT_IN_CENTRAL_WAREHOUSE
-    "22": ParcelStatus.PROBLEM,          # SAMEDAY_POINT_TEMPORARY_UNAVAILABLE
-    "23": ParcelStatus.PROBLEM,          # INCOMPLETE_DELIVERY
-    "24": ParcelStatus.IN_TRANSIT,       # PARCEL_REDIRECTED_TO_OOH
-    "25": ParcelStatus.IN_TRANSIT,       # PARCEL_REDIRECTED_TO_ADDRESS
-    "26": ParcelStatus.IN_TRANSIT,       # PARCEL_REDIRECTED_TO_ANOTHER_OOH
-    "27": ParcelStatus.IN_TRANSIT,       # PARCEL_REDIRECTED_TO_INITIAL_EASYBOX
-    "29": ParcelStatus.PROBLEM,          # PARCEL_UNAVAILABLE_FOR_DELIVERY
-    "30": ParcelStatus.PROBLEM,          # PARCEL_CANNOT_BE_DELIVERED
+    "21": ParcelStatus.IN_TRANSIT,  # PARCEL_KEPT_IN_CENTRAL_WAREHOUSE
+    "22": ParcelStatus.PROBLEM,  # SAMEDAY_POINT_TEMPORARY_UNAVAILABLE
+    "23": ParcelStatus.PROBLEM,  # INCOMPLETE_DELIVERY
+    "24": ParcelStatus.IN_TRANSIT,  # PARCEL_REDIRECTED_TO_OOH
+    "25": ParcelStatus.IN_TRANSIT,  # PARCEL_REDIRECTED_TO_ADDRESS
+    "26": ParcelStatus.IN_TRANSIT,  # PARCEL_REDIRECTED_TO_ANOTHER_OOH
+    "27": ParcelStatus.IN_TRANSIT,  # PARCEL_REDIRECTED_TO_INITIAL_EASYBOX
+    "29": ParcelStatus.PROBLEM,  # PARCEL_UNAVAILABLE_FOR_DELIVERY
+    "30": ParcelStatus.PROBLEM,  # PARCEL_CANNOT_BE_DELIVERED
 }
 
 # Status codes we have already warned about, so each unmapped one is logged
@@ -115,7 +116,7 @@ _payload_shape_logged = False
 
 def _note_payload_shape(raw: dict) -> None:
     """One-shot: report unconfirmed fields so a tester can map them."""
-    global _payload_shape_logged
+    global _payload_shape_logged  # noqa: PLW0603  # one-shot flag per process, by design
     if _payload_shape_logged:
         return
     extra = {f"(top) {k}" for k in set(raw) - _KNOWN_TOP_LEVEL_KEYS}
@@ -186,11 +187,11 @@ def parse_iso(value: str | None) -> datetime | None:
     if not value:
         return None
     try:
-        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(str(value))
     except ValueError:
         return None
     if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
+        parsed = parsed.replace(tzinfo=UTC)
     return parsed
 
 
@@ -206,7 +207,7 @@ def to_iso_timestamp(value: Any) -> str | None:
         return None
     if isinstance(value, (int, float)):
         try:
-            return datetime.fromtimestamp(value / 1000, tz=timezone.utc).isoformat()
+            return datetime.fromtimestamp(value / 1000, tz=UTC).isoformat()
         except (OverflowError, OSError, ValueError):
             return None
     return str(value)
@@ -300,7 +301,9 @@ def build_history(
     return ordered[-max_events:]
 
 
-def tracking_url(tracking_code: str | None, country: str = DEFAULT_COUNTRY) -> str | None:
+def tracking_url(
+    tracking_code: str | None, country: str = DEFAULT_COUNTRY
+) -> str | None:
     """Construct the consumer tracking deep-link for a parcel.
 
     Each country has its own tracking-page URL (see ``COUNTRY_TRACKING_URLS``);
@@ -364,7 +367,9 @@ def normalize_parcel(
         "planned_from": None,
         "planned_to": None,
         "pickup": status is ParcelStatus.AT_PICKUP_POINT,
-        "pickup_point": _event_location(current) if current and status is ParcelStatus.AT_PICKUP_POINT else None,
+        "pickup_point": _event_location(current)
+        if current and status is ParcelStatus.AT_PICKUP_POINT
+        else None,
         "url": tracking_url(tracking_code, country),
         "weight": None,
         "dimensions": None,
@@ -404,14 +409,12 @@ def apply_delivered_filter(parcels: list[dict], entry: ConfigEntry) -> list[dict
     shows.
     """
     options = entry.options
-    filter_type = options.get(
-        CONF_DELIVERED_FILTER_TYPE, DEFAULT_DELIVERED_FILTER_TYPE
-    )
+    filter_type = options.get(CONF_DELIVERED_FILTER_TYPE, DEFAULT_DELIVERED_FILTER_TYPE)
     amount = int(
         options.get(CONF_DELIVERED_FILTER_AMOUNT, DEFAULT_DELIVERED_FILTER_AMOUNT)
     )
     if filter_type == "days":
-        cutoff = datetime.now(timezone.utc) - timedelta(days=amount)
+        cutoff = datetime.now(UTC) - timedelta(days=amount)
         return [
             parcel
             for parcel in parcels

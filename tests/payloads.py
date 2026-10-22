@@ -16,6 +16,7 @@ names and the numeric ``statusStateId`` vocabulary are **reconstructed from the
 official Android APK** and unverified against a real RO/HU/BG AWB. When a real
 AWB arrives, this is the one module to correct — see TODO.md.
 """
+
 from __future__ import annotations
 
 # Realistic-shaped Sameday AWB numbers, distinct per sample.
@@ -64,12 +65,13 @@ def active_sample(code: str = ACTIVE_CODE) -> dict:
 def pickup_sample(code: str = ACTIVE_CODE) -> dict:
     """A parcel waiting in an easybox/locker (statusStateId 18 → at pickup)."""
     sample = delivered_sample(code)
-    sample["awbHistory"] = sample["awbHistory"][:2] + [
+    sample["awbHistory"] = [
+        *sample["awbHistory"][:2],
         event(
             "18",
             "2026-04-29T09:30:00Z",
             "Comanda a fost incarcata in easybox",
             location="Easybox Kaufland Baneasa",
-        )
+        ),
     ]
     return sample

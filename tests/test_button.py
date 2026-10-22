@@ -1,4 +1,5 @@
 """Tests for the Sameday refresh button."""
+
 from unittest.mock import AsyncMock, MagicMock
 
 from custom_components.sameday.button import SamedayRefreshButton

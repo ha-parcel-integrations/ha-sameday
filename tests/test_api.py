@@ -1,14 +1,12 @@
 """Tests for the Sameday API client."""
+
 import json
 from unittest.mock import AsyncMock, MagicMock
 
 import aiohttp
 import pytest
 
-from custom_components.sameday.api import (
-    SamedayApiClient,
-    SamedayApiError,
-)
+from custom_components.sameday.api import SamedayApiClient, SamedayApiError
 
 CODE = "2SDAY0009999"
 

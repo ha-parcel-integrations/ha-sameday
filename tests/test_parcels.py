@@ -4,7 +4,8 @@ These need no Home Assistant instance — the whole point of keeping
 ``parcels.py`` free of I/O is that the carrier-specific mapping (the part you
 rewrite per carrier) can be tested as plain functions.
 """
-from datetime import datetime, timedelta, timezone
+
+from datetime import UTC, datetime, timedelta
 
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -38,7 +39,7 @@ from .payloads import active_sample, delivered_sample, event, pickup_sample
 
 
 @pytest.mark.parametrize(
-    "code,expected",
+    ("code", "expected"),
     [
         ("1", ParcelStatus.REGISTERED),
         ("4", ParcelStatus.OUT_FOR_DELIVERY),
@@ -111,7 +112,7 @@ def test_payload_shape_silent_on_known_fields(caplog):
 def test_parse_iso_handles_z_naive_and_garbage():
     assert parse_iso("2026-04-29T13:12:42Z").tzinfo is not None
     # A naive value is assumed UTC so mixed lists still sort.
-    assert parse_iso("2026-04-29T13:12:42").tzinfo == timezone.utc
+    assert parse_iso("2026-04-29T13:12:42").tzinfo == UTC
     assert parse_iso("not-a-date") is None
     assert parse_iso(None) is None
 
@@ -149,8 +150,7 @@ def test_build_history_orders_oldest_to_newest():
 
 def test_build_history_caps_to_max_events():
     events = [
-        event("7", f"2026-04-{day:02d}T10:00:00Z", "In tranzit")
-        for day in range(1, 26)
+        event("7", f"2026-04-{day:02d}T10:00:00Z", "In tranzit") for day in range(1, 26)
     ]
     assert len(build_history(events, max_events=20)) == 20
 
@@ -300,7 +300,7 @@ def test_normalize_keeps_raw_payload():
 
 
 @pytest.mark.parametrize(
-    "country,expected",
+    ("country", "expected"),
     [
         ("ro", "https://sameday.ro/status-colet/?awb=2SDAY0009999"),
         ("hu", "https://sameday.hu/#awb=2SDAY0009999"),
@@ -366,7 +366,7 @@ def _entry(filter_type: str, amount: int) -> MockConfigEntry:
 
 
 def _delivered_pair() -> list[dict]:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     return [
         {"barcode": "RECENT", "delivered_at": (now - timedelta(days=1)).isoformat()},
         {"barcode": "OLD", "delivered_at": (now - timedelta(days=30)).isoformat()},
@@ -396,4 +396,4 @@ def test_capabilities_are_known_values():
 
 def test_capabilities_are_pickup_point_url_and_history():
     """No sender/receiver/ETA/weight/dimensions on the public AWB timeline."""
-    assert CAPABILITIES == {"pickup_point", "url", "history"}
+    assert {"pickup_point", "url", "history"} == CAPABILITIES
