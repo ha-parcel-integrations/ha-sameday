@@ -1,6 +1,7 @@
 {
   "domain": "sameday",
   "name": "Sameday",
+  "categories": ["productivity_information"],
   "codeowners": [
     "@peter-mdf"
   ],
