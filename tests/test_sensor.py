@@ -7,6 +7,7 @@ from custom_components.sameday.const import ParcelStatus
 from custom_components.sameday.sensor import (
     SamedayAwaitingPickupSensor,
     SamedayDeliveredParcelsSensor,
+    SamedayEnRouteToPickupPointSensor,
     SamedayIncomingParcelsSensor,
     SamedayLastUpdateSensor,
     SamedayNextDeliverySensor,
@@ -86,12 +87,12 @@ def test_parcel_sensor_missing_barcode():
 def test_next_delivery_picks_earliest():
     coordinator = _coordinator(
         [
-            _parcel("A", planned_from="2026-05-02T10:00:00Z"),
-            _parcel("B", planned_from="2026-05-01T10:00:00Z"),
+            _parcel("A", planned_from="2099-05-02T10:00:00Z"),
+            _parcel("B", planned_from="2099-05-01T10:00:00Z"),
         ]
     )
     sensor = SamedayNextDeliverySensor(coordinator, _entry())
-    assert sensor.native_value == datetime(2026, 5, 1, 10, 0, tzinfo=UTC)
+    assert sensor.native_value == datetime(2099, 5, 1, 10, 0, tzinfo=UTC)
     assert sensor.extra_state_attributes["barcode"] == "B"
 
 
@@ -105,7 +106,7 @@ def test_next_delivery_skips_unparseable_moment():
     coordinator = _coordinator(
         [
             _parcel("A", planned_from="not-a-date"),
-            _parcel("B", planned_from="2026-05-01T10:00:00Z"),
+            _parcel("B", planned_from="2099-05-01T10:00:00Z"),
         ]
     )
     sensor = SamedayNextDeliverySensor(coordinator, _entry())
@@ -127,3 +128,28 @@ def test_last_update_sensor():
     coordinator.last_success_time = moment
     sensor = SamedayLastUpdateSensor(coordinator, _entry())
     assert sensor.native_value == moment
+
+
+def test_en_route_counts_pickup_parcels_not_yet_arrived():
+    coordinator = _coordinator(
+        [
+            _parcel("A", ParcelStatus.IN_TRANSIT, pickup=True),
+            _parcel("B", ParcelStatus.AT_PICKUP_POINT, pickup=True),
+            _parcel("C", ParcelStatus.RETURNING, pickup=True),
+            _parcel("D", ParcelStatus.IN_TRANSIT, pickup=False),
+        ]
+    )
+    en_route = SamedayEnRouteToPickupPointSensor(coordinator, _entry())
+    awaiting = SamedayAwaitingPickupSensor(coordinator, _entry())
+    assert [p["barcode"] for p in en_route.extra_state_attributes["parcels"]] == ["A"]
+    assert en_route.native_value == 1
+    assert {
+        p["barcode"] for p in en_route.extra_state_attributes["parcels"]
+    }.isdisjoint(p["barcode"] for p in awaiting.extra_state_attributes["parcels"])
+
+
+def test_next_delivery_skips_a_window_that_has_ended():
+    parcel = _parcel("A", planned_from="2000-01-01T10:00:00Z")
+    parcel["planned_to"] = "2000-01-01T23:59:59Z"
+    sensor = SamedayNextDeliverySensor(_coordinator([parcel]), _entry())
+    assert sensor.native_value is None

@@ -139,6 +139,10 @@
         "name": "Пристигащи пратки",
         "unit_of_measurement": "пратки"
       },
+      "en_route_to_pickup_point": {
+        "name": "На път към пункт за вземане",
+        "unit_of_measurement": "пратки"
+      },
       "awaiting_pickup": {
         "name": "Готови за вземане",
         "unit_of_measurement": "пратки"

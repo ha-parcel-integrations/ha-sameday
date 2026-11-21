@@ -58,15 +58,22 @@ numeric `statusStateId` map are not yet confirmed; the map is best-effort by des
   or not-yet-scanned AWB); a 200 without an `awbHistory` list is also treated as
   unknown (warn), anything else raises `SamedayApiError`. `aiohttp.ClientError`
   is caught per parcel in the gather loop, never around the whole update.
-- **No ETA** — `planned_from`/`planned_to` always `None`, so the next-delivery
+- **No ETA** — `planned_from`/`planned_to` always `None` (run through
+  `planned_window`/`planned_for_status` with Home Assistant's zone, as the
+  carrier spans three countries), so the next-delivery
   sensor and calendar stay inert and `sameday_parcel_delivery_time_changed` never
   fires (machinery kept for parity, exercised white-box in `test_coordinator.py`).
 - **`None` on purpose:** `sender`, `receiver`, `weight`, `dimensions` (absent from
   the public payload). `url` **is** a per-country deep link
   (`COUNTRY_TRACKING_URLS`, threaded via `normalize_parcel(country=…)` from the
   coordinator's `_country`) — RO/BG confirmed, HU (`#awb` fragment) best-effort.
-  `pickup_point` **is** populated, from the current event's `transitLocation`,
-  but only when `status is AT_PICKUP_POINT`. Reflected in `const.py`'s
+  `pickup` is true once any timeline event maps to `AT_PICKUP_POINT` (so it
+  survives collection) and `pickup_point` is the `transitLocation` of the newest
+  such event, `None` when `pickup` is false. Both pickup sensors
+  (`awaiting_pickup`, `en_route_to_pickup_point`) exist because easybox lockers
+  deliver; the redirect-to-locker ids (24, 26, 27) map to `in_transit` and set no
+  route flag, so `en_route_to_pickup_point` reads 0 until a real parcel shows a
+  locker route before arrival (pending). Reflected in `const.py`'s
   `CAPABILITIES` (feeds the docs site's comparison table) — keep the two in
   agreement if that ever changes.
 - **History status is mapped** — unlike some siblings, `awbHistory` events carry a
@@ -87,6 +94,11 @@ why it is keyless) is one level up in `carrier-research/sameday.md`.
 ## Divergences from the scaffold
 
 Everything not listed here follows the scaffold exactly.
+
+*Parcel contract* — the contract says `delivered` is also true for a
+`RETURNING` parcel that is back at the sender; here status id 8
+(`SUCCESSFULLY_RETURNED`) stays `returning` and `delivered` false, because its
+meaning is not confirmed on a real parcel. Revisit once one shows it.
 
 *Dynamic polling* — Sameday's public AWB timeline never populates
 `planned_from` (see "No ETA" above), so an `out_for_delivery` parcel goes

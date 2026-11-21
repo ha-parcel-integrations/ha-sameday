@@ -244,9 +244,9 @@ def test_normalize_delivered_parcel():
     assert parcel["status"] == ParcelStatus.DELIVERED
     assert parcel["raw_status"] == "Livrat"
     assert parcel["delivered"] is True
-    # delivered_at is the newest event's statusDate.
+    # delivered_at is the delivery event's statusDate.
     assert parcel["delivered_at"] == "2026-04-29T13:12:42Z"
-    # Sameday's public timeline carries no ETA window at all.
+    # The public timeline carries no ETA window at all.
     assert parcel["planned_from"] is None
     assert parcel["planned_to"] is None
     # Deep link defaults to the RO tracking page (default country).
@@ -275,7 +275,7 @@ def test_normalize_pickup_parcel_names_the_locker():
     parcel = normalize_parcel(pickup_sample())
     assert parcel["status"] == ParcelStatus.AT_PICKUP_POINT
     assert parcel["pickup"] is True
-    # The locker/easybox location comes from the current event's transitLocation.
+    # The easybox name comes from the pickup event's transitLocation.
     assert parcel["pickup_point"] == "Easybox Kaufland Baneasa"
 
 
