@@ -174,8 +174,11 @@ Every payload is the full normalised parcel plus the hub's `device_id`. Events a
 
 | Service | Fields | Description |
 |---|---|---|
-| `sameday.track_parcel` | `tracking_code` | Start tracking a parcel |
+| `sameday.track_parcel` | `tracking_code`, `contents` (optional) | Start tracking a parcel |
 | `sameday.untrack_parcel` | `tracking_code` | Stop tracking a parcel |
+| `sameday.update_contents` | `tracking_code`, `contents` | Set, replace or clear (empty text) a note on what is in a parcel |
+
+The `contents` text is stored locally, never sent to Sameday, and fills the parcel's `contents` field; it titles the parcel's calendar event and shows on the next-delivery sensor.
 
 ## Examples
 

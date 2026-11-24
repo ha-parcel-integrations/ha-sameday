@@ -213,6 +213,7 @@ CANONICAL_KEYS = [
     "barcode",
     "sender",
     "receiver",
+    "contents",
     "status",
     "raw_status",
     "delivered",
@@ -241,6 +242,7 @@ def test_normalize_delivered_parcel():
     # Sameday's public payload names neither party.
     assert parcel["sender"] is None
     assert parcel["receiver"] is None
+    assert parcel["contents"] is None
     assert parcel["status"] == ParcelStatus.DELIVERED
     assert parcel["raw_status"] == "Livrat"
     assert parcel["delivered"] is True

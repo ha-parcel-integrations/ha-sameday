@@ -24,6 +24,7 @@ TO_REDACT = {
     "barcode",
     "sender",
     "receiver",
+    "contents",
     "pickup_point",
     "url",
     # Sameday payload fields

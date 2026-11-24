@@ -20,6 +20,7 @@ CANONICAL_KEYS = [
     "barcode",
     "sender",
     "receiver",
+    "contents",
     "status",
     "raw_status",
     "delivered",
@@ -115,6 +116,10 @@ def test_a_returning_parcel_keeps_pickup_and_is_not_delivered():
     assert parcel["status"] is ParcelStatus.RETURNING
     assert parcel["delivered"] is False
     assert parcel["pickup"] is True
+
+
+def test_contents_is_none_from_the_carrier():
+    assert normalize_parcel(delivered_sample())["contents"] is None
 
 
 def test_a_home_delivery_is_not_pickup():
